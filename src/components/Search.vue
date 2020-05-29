@@ -19,18 +19,30 @@
     </form> 
     
     <!-- results div -->
-    <div class="mb-">
+    <div class="mb-" v-if="!this.hasSearched" >
       <div v-if="results.length" class="p-20">
-        <p v-for="(result, index) in results" class="text-white" @onclick="cardSelected">
-          {{result}}
-        </p>
+        <div v-for="(result, index) in results" class="text-white text-left" @click="cardSelected(index)">
+          <p>{{result}}</p>
+        </div>
       </div>
-      <div v-else class="p-20 text-white">
+      <div v-else class="p-20 text-white text-left">
         No results!
       </div>
     </div>
 
     <!-- card details -->
+
+    <div v-if="this.hasSearched" class="text-white text-left">
+      <p>Card Name: {{cardName}}</p>
+      <p>Card ID: {{cardID}}</p>
+      <p>Artist Name: {{artistName}}</p>
+      <p>Booster: {{isBooster}}</p>
+      <p>Collector Number: {{collectorNumber}}</p>
+      <img :src="imageLink"/>
+      <p>Release Date: {{releaseDate}}</p>
+      <p>Set Name: {{setName}}</p>
+      <p>Set Link: <a :href="setLink">Click Me! (Doesn't Work Yet)</a></p>
+    </div>
 
   </div>
 </template>
@@ -42,26 +54,61 @@ export default {
   data () {
     return {
       query: '',
-      results: ['']
+      results: [''],
+      hasSearched: false,
+
+      // Card Details
+
+      cardName: '',
+      cardID: '',
+      artistName: '',
+      isBooster: '',
+      collectorNumber: '',
+      imageLink: '',
+      releaseDate: '',
+      setName: '',
+      setLink: '',
+      prices: {
+
+      }
+
     }
   },
   methods:{
     search(){
+      this.hasSearched = false
       axios.get(`https://api.scryfall.com/cards/autocomplete?q=${this.query}`)
         .then(res => {
           this.results = res.data.data
         })
         .catch(error => console.log(error))
+
     },
-    cardSelected(){
+    cardSelected(index){
 
-      console.log(index)
+      this.hasSearched = true
+      axios.get(`https://api.scryfall.com/cards/named?exact=${this.results[index].replace(/ /g,"+")}`)
+        .then(res => {
+          console.log(res.data)
 
-      // axios.get(`https://api.scryfall.com/cards/named?exact=aust+com`)
-      //   .then(res => {
-      //     this.results = res.data.data
-      //   })
-      //   .catch(error => console.log(error))
+          this.cardName = res.data.name
+          this.cardID = res.data.id
+          this.artistName = res.data.artist
+          this.isBooster = res.data.booster
+          this.collectorNumber = res.data.collector_number
+          this.imageLink = res.data.image_uris.normal
+          this.releaseDate = res.data.released_at
+          this.setName = res.data.set_name
+          //this.setLink = res.data.set_uri
+          //this.prices
+
+        })
+        .catch(error => console.log(error))
+    }
+  },
+  computed:{
+    ToUpper(){
+      
     }
   }
 }
