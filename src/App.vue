@@ -2,8 +2,11 @@
   <div id="app" class="flex flex-col">
     <img src="./assets/logo.png" style="height: 300px; width: 200px">
     <h1 class="text-6xl text-white grid-cols-1 p-10">MAGIC THE GATHERING</h1>
-    <search class="object-center"></search>
-    <card-profile></card-profile>
+    <search 
+      class="object-center"
+      @cardProfileSearch="cardProfileSearchName = $event"></search>
+    <card-profile
+      :cardProfileSearchName = "cardProfileSearchName"></card-profile>
   </div>
 </template>
 
@@ -13,6 +16,11 @@ import CardProfile from './components/CardProfile.vue'
 
 export default {
   name: 'App',
+  data(){
+    return{
+      cardProfileSearchName: ''
+    }
+  },
   components: {
     Search: Search,
     CardProfile: CardProfile

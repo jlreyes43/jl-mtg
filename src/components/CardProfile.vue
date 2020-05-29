@@ -1,6 +1,7 @@
 <template>
     <div class="text-white text-left">
-        <!-- <p>Card Name: {{cardName}}</p>
+        <p>FROM CARD PROFILE ---> {{cardProfileSearchName}}</p>
+        <p>Card Name: {{cardName}}</p>
         <p>Card ID: {{cardID}}</p>
         <p>Artist Name: {{artistName}}</p>
         <p>Booster: {{isBooster}}</p>
@@ -12,7 +13,7 @@
         <p>Tix Price: {{this.prices.tix}}</p>
         <p>USD Price: {{this.prices.usd}}</p>
         <p>USD Foil Price: {{this.prices.usdFoil}}</p>
-        <p>Set Link: <a :href="setLink">Click Me! (Doesn't Work Yet)</a></p> -->
+        <p>Set Link: <a :href="setLink">Click Me! (Doesn't Work Yet)</a></p>
     </div>
 </template>
 
@@ -21,7 +22,39 @@
 import axios from 'axios';
 
 export default {
-
+    data(){
+        return{
+            prices: {
+                eur: '',
+                tix: '',
+                usd: '',
+                usdFoil: ''
+            }
+        }
+    },
+    props:{
+        cardProfileSearchName: String
+    },
+    updated(){
+        axios.get(`https://api.scryfall.com/cards/named?exact=${cardProfileSearchName}`)
+        .then( ({data}) => {
+            console.log(data)
+            this.cardName = data.name
+            this.cardID = data.id
+            this.artistName = data.artist
+            this.isBooster = data.booster
+            this.collectorNumber = data.collector_number
+            this.imageLink = data.image_uris.normal
+            this.releaseDate = data.released_at
+            this.setName = data.set_name
+            //this.setLink = data.set_uri
+            this.prices.eur = data.prices.eur
+            this.prices.tix = data.prices.tix
+            this.prices.usd = data.prices.usd
+            this.prices.usdFoil = data.prices.usd_foil
+        })
+        .catch(error => console.log(error))
+    }
 }
 </script>
 

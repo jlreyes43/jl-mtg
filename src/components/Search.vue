@@ -60,12 +60,7 @@ export default {
       query: '',
       results: [''],
       hasSearched: false,
-      prices: {
-        eur: '',
-        tix: '',
-        usd: '',
-        usdFoil: ''
-      }
+      
     }
   },
   props:{
@@ -75,32 +70,15 @@ export default {
     search(){
       this.hasSearched = false
       axios.get(`https://api.scryfall.com/cards/autocomplete?q=${this.query}`)
-        .then(res => {
-          this.results = res.data.data
+        .then(({data}) => {
+          this.results = data.data
         })
         .catch(error => console.log(error))
 
     },
     cardSelected(index){
       this.hasSearched = true
-      axios.get(`https://api.scryfall.com/cards/named?exact=${this.results[index].replace(/ /g,"+")}`)
-        .then(res => {
-          console.log(res.data)
-          this.cardName = res.data.name
-          this.cardID = res.data.id
-          this.artistName = res.data.artist
-          this.isBooster = res.data.booster
-          this.collectorNumber = res.data.collector_number
-          this.imageLink = res.data.image_uris.normal
-          this.releaseDate = res.data.released_at
-          this.setName = res.data.set_name
-          //this.setLink = res.data.set_uri
-          this.prices.eur = res.data.prices.eur
-          this.prices.tix = res.data.prices.tix
-          this.prices.usd = res.data.prices.usd
-          this.prices.usdFoil = res.data.prices.usd_foil
-        })
-        .catch(error => console.log(error))
+      this.$emit('cardProfileSearch', this.results[index].replace(/ /g,"+"))
     }
   }
 }
