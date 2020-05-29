@@ -41,6 +41,10 @@
       <img :src="imageLink"/>
       <p>Release Date: {{releaseDate}}</p>
       <p>Set Name: {{setName}}</p>
+      <p>EUR Price: {{this.prices.eur}}</p>
+      <p>Tix Price: {{this.prices.tix}}</p>
+      <p>USD Price: {{this.prices.usd}}</p>
+      <p>USD Foil Price: {{this.prices.usdFoil}}</p>
       <p>Set Link: <a :href="setLink">Click Me! (Doesn't Work Yet)</a></p>
     </div>
 
@@ -69,7 +73,10 @@ export default {
       setName: '',
       setLink: '',
       prices: {
-
+        eur: '',
+        tix: '',
+        usd: '',
+        usdFoil: ''
       }
 
     }
@@ -90,7 +97,6 @@ export default {
       axios.get(`https://api.scryfall.com/cards/named?exact=${this.results[index].replace(/ /g,"+")}`)
         .then(res => {
           console.log(res.data)
-
           this.cardName = res.data.name
           this.cardID = res.data.id
           this.artistName = res.data.artist
@@ -100,7 +106,10 @@ export default {
           this.releaseDate = res.data.released_at
           this.setName = res.data.set_name
           //this.setLink = res.data.set_uri
-          //this.prices
+          this.prices.eur = res.data.prices.eur
+          this.prices.tix = res.data.prices.tix
+          this.prices.usd = res.data.prices.usd
+          this.prices.usdFoil = res.data.prices.usd_foil
 
         })
         .catch(error => console.log(error))
