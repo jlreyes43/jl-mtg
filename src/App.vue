@@ -3,16 +3,19 @@
     <img src="./assets/logo.png" style="height: 300px; width: 200px">
     <h1 class="text-6xl text-white grid-cols-1 p-10">MAGIC THE GATHERING</h1>
     <search class="object-center"></search>
+    <card-profile></card-profile>
   </div>
 </template>
 
 <script>
 import Search from './components/Search.vue'
+import CardProfile from './components/CardProfile.vue'
 
 export default {
   name: 'App',
   components: {
-    Search
+    Search: Search,
+    CardProfile: CardProfile
   }
 }
 </script>

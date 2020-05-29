@@ -41,10 +41,10 @@
       <img :src="imageLink"/>
       <p>Release Date: {{releaseDate}}</p>
       <p>Set Name: {{setName}}</p>
-      <p>EUR Price: {{this.prices.eur}}</p>
-      <p>Tix Price: {{this.prices.tix}}</p>
-      <p>USD Price: {{this.prices.usd}}</p>
-      <p>USD Foil Price: {{this.prices.usdFoil}}</p>
+      <p>EUR Price: {{prices.eur}}</p>
+      <p>Tix Price: {{prices.tix}}</p>
+      <p>USD Price: {{prices.usd}}</p>
+      <p>USD Foil Price: {{prices.usdFoil}}</p>
       <p>Set Link: <a :href="setLink">Click Me! (Doesn't Work Yet)</a></p>
     </div>
 
@@ -60,26 +60,16 @@ export default {
       query: '',
       results: [''],
       hasSearched: false,
-
-      // Card Details
-
-      cardName: '',
-      cardID: '',
-      artistName: '',
-      isBooster: '',
-      collectorNumber: '',
-      imageLink: '',
-      releaseDate: '',
-      setName: '',
-      setLink: '',
       prices: {
         eur: '',
         tix: '',
         usd: '',
         usdFoil: ''
       }
-
     }
+  },
+  props:{
+    searchCardName: String
   },
   methods:{
     search(){
@@ -92,7 +82,6 @@ export default {
 
     },
     cardSelected(index){
-
       this.hasSearched = true
       axios.get(`https://api.scryfall.com/cards/named?exact=${this.results[index].replace(/ /g,"+")}`)
         .then(res => {
@@ -110,14 +99,8 @@ export default {
           this.prices.tix = res.data.prices.tix
           this.prices.usd = res.data.prices.usd
           this.prices.usdFoil = res.data.prices.usd_foil
-
         })
         .catch(error => console.log(error))
-    }
-  },
-  computed:{
-    ToUpper(){
-      
     }
   }
 }
