@@ -1,12 +1,17 @@
 <template>
   <div id="app" class="flex flex-col">
     <img src="./assets/logo.png" style="height: 300px; width: 200px">
-    <h1 class="text-6xl text-white grid-cols-1 p-10">MAGIC THE GATHERING</h1>
-    <search 
-      class="object-center"
-      @cardProfileSearch="cardProfileSearchName = $event"></search>
-    <card-profile
-      :cardProfileSearchName = "cardProfileSearchName"></card-profile>
+    <br>
+    <img src="./assets/mtg-logo.png" style="height: 200px; width: 600px">
+    <br><br>
+    <div class="flex flex-row">
+      <search 
+        class="object-center"
+        @cardProfileSearch="cardProfileSearchName = $event"></search>
+      <hr>
+      <card-profile
+        :cardProfileSearchName = "cardProfileSearchName"></card-profile>
+    </div>
   </div>
 </template>
 
