@@ -21,7 +21,7 @@
     <!-- results div -->
     <div class="mb-" v-if="!this.hasSearched" >
       <div v-if="results.length" class="p-20">
-        <div v-for="(result, index) in results" class="text-white text-left" @click="cardSelected(index)">
+        <div v-for="(result, index) in results" class="text-white text-left" @click="cardSelected(index); cardProfileSearchTrigger">
           <p>{{result}}</p>
         </div>
       </div>
