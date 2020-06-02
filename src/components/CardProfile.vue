@@ -1,6 +1,6 @@
 <template>
     <div class="text-white text-left">
-        <p>FROM CARD PROFILE ---> {{cardProfileSearchName}}</p>
+        <p>{{ cardProfileSearchName }}</p>
         <p>Card Name: {{cardName}}</p>
         <p>Card ID: {{cardID}}</p>
         <p>Artist Name: {{artistName}}</p>
@@ -44,9 +44,9 @@ export default {
         cardProfileSearchName: String,
         // cardProfileSearchTrigger: Function
     },
-    methods:{
-        cardProfileSearchTrigger(){
-            axios.get(`https://api.scryfall.com/cards/named?exact=${cardProfileSearchName}`)
+    watch:{
+        cardProfileSearchName: function(newVal, oldVal){
+            axios.get(`https://api.scryfall.com/cards/named?exact=${newVal}`)
             .then( ({data}) => {
                 console.log(data)
                 this.cardName = data.name
